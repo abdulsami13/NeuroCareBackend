@@ -16,3 +16,7 @@ app.include_router(chatsbots.app)
 @app.get("/")
 async def root():
     return {"message": "Hello Bigger Applications!"}    
+
+
+from mangum import Mangum
+handler = Mangum(app)
