@@ -1,37 +1,31 @@
-from fastapi import Depends, APIRouter,HTTPException
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
 from typing import List, Dict
 import os
 from dotenv import load_dotenv
-from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
-from pydantic import BaseModel
-from typing import List, Dict
 
+# Load environment variables
 load_dotenv()
 
+# Ensure the Groq API key is set
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
 if not GROQ_API_KEY:
     raise ValueError("API key for Groq is missing. Please set the GROQ_API_KEY in the .env file.")
 
-
-
-
-app =  APIRouter()
-
-
-
-
-
+# Initialize Groq client
 client = Groq(api_key=GROQ_API_KEY)
 
+# Define the router
+app = APIRouter()
 
+# Pydantic model for user input
 class UserInput(BaseModel):
     message: str
     role: str = "user"
     conversation_id: str
-    
+
+# Conversation class to manage chat sessions
 class Conversation:
     def __init__(self):
         self.messages: List[Dict[str, str]] = [
@@ -39,11 +33,10 @@ class Conversation:
         ]
         self.active: bool = True
 
+# In-memory storage for conversations
 conversations: Dict[str, Conversation] = {}
 
-
-
-
+# Helper function to query Groq API
 def query_groq_api(conversation: Conversation) -> str:
     try:
         completion = client.chat.completions.create(
@@ -65,15 +58,13 @@ def query_groq_api(conversation: Conversation) -> str:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error with Groq API: {str(e)}")
 
-
+# Helper function to get or create a conversation
 def get_or_create_conversation(conversation_id: str) -> Conversation:
     if conversation_id not in conversations:
         conversations[conversation_id] = Conversation()
     return conversations[conversation_id]
 
-
-
-
+# Chat endpoint
 @app.post("/chat/")
 async def chat(input: UserInput):
     conversation = get_or_create_conversation(input.conversation_id)
@@ -91,8 +82,10 @@ async def chat(input: UserInput):
             "content": input.message
         })
         
+        # Query Groq API
         response = query_groq_api(conversation)
         
+        # Append the assistant's response to the conversation
         conversation.messages.append({
             "role": "assistant",
             "content": response
@@ -105,7 +98,3 @@ async def chat(input: UserInput):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
