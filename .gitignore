@@ -1,0 +1,42 @@
+# Virtual environment (Python)
+env
+venv/
+env/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+.Python
+pyvenv.cfg
+
+# Logs
+logs/
+*.log
+
+# Environment variables / secrets
+.env
+.env.local
+secrets.json
+
+# Editor and system files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Dependencies (if using poetry)
+poetry.lock
+
+# Database files (SQLite, if applicable)
+*.sqlite3
+*.db
+
+# Pytest cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Migrations (if using Alembic and don't want to track generated files)
+migrations/versions/
