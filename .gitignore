@@ -1,31 +1,31 @@
 # Virtual environment (Python)
-env
 venv/
 env/
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
-__pycache__/
 .Python
 pyvenv.cfg
 
-# Logs
+# Logs & Debugging
 logs/
 *.log
 
-# Environment variables / secrets
+# Environment variables / secrets (DO NOT TRACK)
 .env
 .env.local
+.env.*.example
 secrets.json
 
-# Editor and system files
+# Editor & System Files
 .vscode/
 .idea/
 *.swp
 .DS_Store
 Thumbs.db
 
-# Dependencies (if using poetry)
+# Poetry (if using it)
 poetry.lock
 
 # Database files (SQLite, if applicable)
@@ -38,8 +38,13 @@ poetry.lock
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Migrations (if using Alembic and don't want to track generated files)
+# Alembic Migrations (if using)
 migrations/versions/
 
-
+# Node.js (if using npm dependencies)
 node_modules/
+package-lock.json
+yarn.lock
+
+# Vercel Deployment (optional)
+.vercel/
