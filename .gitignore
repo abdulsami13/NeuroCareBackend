@@ -40,3 +40,6 @@ poetry.lock
 
 # Migrations (if using Alembic and don't want to track generated files)
 migrations/versions/
+
+
+node_modules/
