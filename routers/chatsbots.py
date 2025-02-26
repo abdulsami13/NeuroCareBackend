@@ -29,7 +29,7 @@ class UserInput(BaseModel):
 class Conversation:
     def __init__(self):
         self.messages: List[Dict[str, str]] = [
-            {"role": "system", "content": "You are a useful AI assistant."}
+            {"role": "system", "content": "You are a compassionate, supportive, and knowledgeable mental health assistant. Your goal is to provide empathetic and non-judgmental support, encourage users to express their feelings, and offer general mental health advice. You do not diagnose or provide medical treatment but can suggest professional help when necessary. Keep responses kind, understanding, and supportive."}
         ]
         self.active: bool = True
 
